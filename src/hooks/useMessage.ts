@@ -29,21 +29,25 @@ const useMessage = () => {
       { role: "user", content: text },
     ]);
     setText("");
-    await gemini();
+    await streamingGemini();
   };
 
-  const gemini = async () => {
-    console.log("Gemini Nano を起動します");
+  const streamingGemini = async () => {
     const canCreate = await window.ai.canCreateTextSession();
+
     if (canCreate === "no") {
       console.log("Gemini Nano は利用できません");
     } else {
       const session = await window.ai.createTextSession();
-      const result = await session.prompt(text);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { role: "assistant", content: result },
-      ]);
+      const stream = session.promptStreaming(text);
+      // +1している理由は、値が更新される前にインデックスを取得しているため
+      const lastMessageIndex = messages.length + 1;
+      for await (const chunk of stream as AsyncIterable<string>) {
+        setMessages((prevMessages) => [
+          ...prevMessages.slice(0, lastMessageIndex),
+          { role: "assistant", content: chunk },
+        ]);
+      }
     }
   };
 
