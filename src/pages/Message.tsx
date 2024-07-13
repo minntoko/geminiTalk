@@ -32,6 +32,23 @@ const Message = () => {
     }
   }, [text]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 900) {
+        setIsOpen(false);
+      } else {
+        setIsOpen(true);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Call on mount to set initial state based on window size
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <>
       <SFlex>
