@@ -36,63 +36,12 @@ const SSidebar = styled.div`
   padding: 16px;
   border-right: 1px solid #eee;
   background-color: #fff;
+  transform: translateX(-100%);
   transition: all 0.2s;
   position: fixed;
   z-index: 100;
   &.active {
-    transform: translateX(-100%);
-  }
-`;
-
-const SHamburgerMenu = styled.div`
-  position: fixed;
-  top: 10px;
-  left: 16px;
-  width: 40px;
-  height: 40px;
-  padding: 8px;
-  transition: all 0.2s;
-  border-radius: 8px;
-  cursor: pointer;
-  &:hover {
-    background-color: #edf2f8;
-  }
-`;
-
-const SHamburgerLine = styled.span`
-  display: block;
-  width: 24px;
-  height: 2px;
-  background-color: #333;
-  position: absolute;
-  top: 19px;
-  &::before,
-  &::after {
-    content: "";
-    display: block;
-    width: 100%;
-    height: 2px;
-    background-color: #333;
-    position: absolute;
-    transition: all 0.2s;
-  }
-  &::before {
-    top: -6px;
-  }
-  &::after {
-    bottom: -6px;
-  }
-  // ハンバーガーメニューが開いた時のアニメーション
-  &.active {
-    background-color: transparent;
-    &::before {
-      top: 0;
-      transform: rotate(135deg);
-    }
-    &::after {
-      bottom: 0;
-      transform: rotate(45deg);
-    }
+    transform: translateX(0);
   }
 `;
 

@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 
 const Message = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const handleHamburgerMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -98,10 +98,10 @@ const SMainContainer = styled.div`
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
-  margin-left: 260px;
+  margin-left: 0;
   transition: all 0.2s;
   &.active {
-    margin-left: 0;
+    margin-left: 260px;
   }
 `;
 
@@ -125,7 +125,7 @@ const SHamburgerLine = styled.span`
   display: block;
   width: 24px;
   height: 2px;
-  background-color: transparent;
+  background-color: #333;
   position: absolute;
   top: 19px;
   &::before,
@@ -139,23 +139,23 @@ const SHamburgerLine = styled.span`
     transition: all 0.2s;
   }
   &::before {
-    top: 0;
-    transform: rotate(135deg);
+      top: -6px;
+      transform: rotate(0);
   }
   &::after {
-    bottom: 0;
-    transform: rotate(45deg);
+      bottom: -6px;
+      transform: rotate(0);
   }
   // ハンバーガーメニューが開いた時のアニメーション
   &.active {
-    background-color: #333;
+    background-color: transparent;
     &::before {
-      top: -6px;
-      transform: rotate(0);
+    top: 0;
+    transform: rotate(135deg);
     }
     &::after {
-      bottom: -6px;
-      transform: rotate(0);
+    bottom: 0;
+    transform: rotate(45deg);
     }
   }
 `;
