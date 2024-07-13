@@ -1,11 +1,18 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import useMessage from "../hooks/useMessage";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 
+interface WelcomeCards {
+  title: string;
+  icon: string;
+  prompt: string;
+}
+
 const Message = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [welcomeCards, setWelcomeCards] = useState<WelcomeCards[]>([]);
   const handleHamburgerMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -33,6 +40,7 @@ const Message = () => {
   }, [text]);
 
   useEffect(() => {
+    randomWelcomeMessage();
     const handleResize = () => {
       if (window.innerWidth <= 900) {
         setIsOpen(false);
@@ -41,13 +49,63 @@ const Message = () => {
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     handleResize(); // Call on mount to set initial state based on window size
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const welcomeMessages = [
+    {
+      title: "長所・短所の説明",
+      icon: "./src/assets/images/light.svg",
+      prompt: "スマートウォッチの長所・短所について会話形式でわかりやすく説明して。",
+    },
+    {
+      title: "面接の準備",
+      icon: "./src/assets/images/pen.svg",
+      prompt: "IT企業のフロントエンドエンジニアの求人に応募するんだけど、面接で聞かれそうな質問をリストにまとめて。",
+    },
+    {
+      title: "文章の校正",
+      icon: "./src/assets/images/pen.svg",
+      prompt: "次の文章に文法ミスや誤字脱字がないかチェックして。",
+    },
+    {
+      title: "プレゼンのアイデア",
+      icon: "./src/assets/images/compass.svg",
+      prompt: "面白くてユニークなプログラミングに関連するプレゼンのテーマを10個考えて。",
+    },
+    {
+      title: "文章の要約",
+      icon: "./src/assets/images/pen.svg",
+      prompt: "次の文章を200文字程度に要約してください。",
+    },
+    {
+      title: "プログラムを作成",
+      icon: "./src/assets/images/terminal.svg",
+      prompt: "React, TypeScriptで次の要件を満たすプログラムを作成してください。",
+    },
+    {
+      title: "モノの比較",
+      icon: "./src/assets/images/light.svg",
+      prompt: "こしあんとつぶあんを比較して表でまとめて。",
+    }
+  ]
+
+  const randomWelcomeMessage = () => {
+    // ランダムに要素を4つ取得
+    const randomMessages = welcomeMessages
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 4);
+    setWelcomeCards(randomMessages);
+  }
+
+  const handleWelcomeBox = (prompt: string) => {
+    setText(prompt);
+  }
 
   return (
     <>
@@ -62,6 +120,23 @@ const Message = () => {
           </SHamburgerMenu>
           <SDisplayContainer>
             <SMessageContainer>
+              {/* メッセージがない場合は、ウェルカムメッセージを表示 */}
+              {messages.length === 0 && (
+                <SWelcomeContainer>
+                  <div>
+                    <SWelcomeMessage>ようこそGemini Talkへ</SWelcomeMessage>
+                    <SSpan>ご用件をお聞かせください</SSpan>
+                  </div>
+                  <SWelcomeBoxContainer>
+                    {welcomeCards.map((message, index) => (
+                      <SWelcomeBox key={message.title + index} onClick={() => handleWelcomeBox(message.prompt)}>
+                        <p>{message.title}</p>
+                        <img src={message.icon} alt="icon" />
+                      </SWelcomeBox>
+                    ))}
+                  </SWelcomeBoxContainer>
+                </SWelcomeContainer>
+              )}
               {messages.map((message, index) => (
                 <SCard key={message.content + index}>
                   <SIcon
@@ -156,23 +231,23 @@ const SHamburgerLine = styled.span`
     transition: all 0.2s;
   }
   &::before {
-      top: -6px;
-      transform: rotate(0);
+    top: -6px;
+    transform: rotate(0);
   }
   &::after {
-      bottom: -6px;
-      transform: rotate(0);
+    bottom: -6px;
+    transform: rotate(0);
   }
   // ハンバーガーメニューが開いた時のアニメーション
   &.active {
     background-color: transparent;
     &::before {
-    top: 0;
-    transform: rotate(135deg);
+      top: 0;
+      transform: rotate(135deg);
     }
     &::after {
-    bottom: 0;
-    transform: rotate(45deg);
+      bottom: 0;
+      transform: rotate(45deg);
     }
   }
 `;
@@ -192,11 +267,81 @@ const SMessageContainer = styled.div`
   flex-grow: 1;
   flex-direction: column;
   gap: 12px;
-  width: 640px;
+  width: 70%;
+  min-width: 640px;
+  max-width: 880px;
   padding: 40px 20px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
+  }
+`;
+
+const SWelcomeContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  margin-top: 30px;
+`;
+
+const slide = keyframes`
+  from { background-position: 0% 0%; } 
+  to { background-position: 100% 0%; }    /* 右から左へ移動するアニメーション */
+`;
+
+const SWelcomeMessage = styled.span`
+  display: block;
+  font-size: 3rem;
+  font-weight: bold;
+  line-height: 1.2;
+  color: transparent;
+  background-clip: text;
+  background-image: linear-gradient(45deg, #12a3d8, #a563ed, #fc5d5d, #f9c017, #8ad962, #12a3d8, #a563ed, #fc5d5d);
+  background-size: 400%;
+  animation: ${slide} 60s infinite linear;
+`;
+
+const SSpan = styled.span`
+  display: block;
+  font-size: 3rem;
+  line-height: 1.2;
+  font-weight: bold;
+  color: #bbb;
+`;
+
+const SWelcomeBoxContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 100px;
+  gap: 8px;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const SWelcomeBox = styled.button`
+  width: 200px;
+  height: 150px;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: #fff;
+  position: relative;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    background-color: #f5f5f5;
+  }
+  &:focus {
+    background-color: #d3e3fd;
+    outline: none;
+  }
+  img {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 16px;
+    left: 16px;
   }
 `;
 
@@ -249,6 +394,7 @@ const SInputArea = styled.div`
   justify-content: space-between;
   width: 70%;
   min-width: 640px;
+  max-width: 880px;
   margin: 0 auto;
   padding: 12px 0;
   border-radius: 8px;
