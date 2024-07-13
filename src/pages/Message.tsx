@@ -97,7 +97,9 @@ const SMessageBox = styled.div<{role: string}>`
 
 const SMessage = styled.div<{role: string}>`
   padding: 4px 16px;
+  min-width: 48px;
   max-width: 80%;
+  min-height: 32px;
   color: ${(props) => (props.role === "user" ? "#fff" : "#0d0d0d")};
   background-color: ${(props) => (props.role === "user" ? "#12b8d8" : "#efefef")};
   border-radius: 16px;
