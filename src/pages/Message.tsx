@@ -83,7 +83,6 @@ const SMessageContainer = styled.div`
   flex-direction: column;
   gap: 12px;
   width: 640px;
-  /* max-height: 100%; */
   padding: 40px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
