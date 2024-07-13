@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Message } from "../types/message";
 
 declare global {
   interface Window {
@@ -12,10 +13,6 @@ declare global {
   }
 }
 
-interface Message {
-  role: string;
-  content: string;
-}
 
 const useMessage = () => {
   const [text, setText] = useState("");
@@ -70,6 +67,7 @@ const useMessage = () => {
     text,
     setText,
     messages,
+    setMessages,
     sendMessage,
   };
 };
