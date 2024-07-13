@@ -1,27 +1,19 @@
 import styled from "styled-components";
 import { Message } from "../types/message";
-import { useState } from "react";
 
 interface SidebarProps {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   setText: React.Dispatch<React.SetStateAction<string>>;
+  isOpen: boolean;
 }
 
-const Sidebar = ({ setMessages, setText }: SidebarProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleHamburgerMenu = () => {
-    setIsOpen(!isOpen);
-    console.log(isOpen);
-  };
+const Sidebar = ({ setMessages, setText, isOpen }: SidebarProps) => {
   const handleNewChat = () => {
     setMessages([]);
     setText("");
   };
   return (
     <SSidebar className={isOpen ? "active" : ""}>
-      <SHamburgerMenu onClick={handleHamburgerMenu}>
-        <SHamburgerLine className={`hamburger__line ${isOpen ? "active" : ""}`}></SHamburgerLine>
-      </SHamburgerMenu>
       <SButton onClick={handleNewChat}>
         <SButtonIcon src="./src/assets/images/plus.svg" alt="plus" />
         チャットを新規作成
@@ -44,6 +36,12 @@ const SSidebar = styled.div`
   padding: 16px;
   border-right: 1px solid #eee;
   background-color: #fff;
+  transition: all 0.2s;
+  position: fixed;
+  z-index: 100;
+  &.active {
+    transform: translateX(-100%);
+  }
 `;
 
 const SHamburgerMenu = styled.div`

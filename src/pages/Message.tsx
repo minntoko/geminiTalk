@@ -1,10 +1,14 @@
 import styled from "styled-components";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import useMessage from "../hooks/useMessage";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 
 const Message = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleHamburgerMenu = () => {
+    setIsOpen(!isOpen);
+  };
   const { text, setText, messages, setMessages, sendMessage } = useMessage();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -31,9 +35,14 @@ const Message = () => {
   return (
     <>
       <SFlex>
-        <Sidebar setMessages={setMessages} setText={setText} />
-        <SMainContainer>
+        <Sidebar setMessages={setMessages} setText={setText} isOpen={isOpen} />
+        <SMainContainer className={isOpen ? "active" : ""}>
           <Header headding="Gemini Talk" />
+          <SHamburgerMenu onClick={handleHamburgerMenu}>
+            <SHamburgerLine
+              className={`hamburger__line ${isOpen ? "active" : ""}`}
+            ></SHamburgerLine>
+          </SHamburgerMenu>
           <SDisplayContainer>
             <SMessageContainer>
               {messages.map((message, index) => (
@@ -80,8 +89,6 @@ const Message = () => {
 };
 
 const SFlex = styled.div`
-  display: flex;
-  height: 100vh;
   background-color: #edf2f8;
 `;
 
@@ -91,6 +98,66 @@ const SMainContainer = styled.div`
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
+  margin-left: 260px;
+  transition: all 0.2s;
+  &.active {
+    margin-left: 0;
+  }
+`;
+
+const SHamburgerMenu = styled.div`
+  position: fixed;
+  top: 10px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  transition: all 0.2s;
+  border-radius: 8px;
+  z-index: 200;
+  cursor: pointer;
+  &:hover {
+    background-color: #edf2f8;
+  }
+`;
+
+const SHamburgerLine = styled.span`
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: transparent;
+  position: absolute;
+  top: 19px;
+  &::before,
+  &::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #333;
+    position: absolute;
+    transition: all 0.2s;
+  }
+  &::before {
+    top: 0;
+    transform: rotate(135deg);
+  }
+  &::after {
+    bottom: 0;
+    transform: rotate(45deg);
+  }
+  // ハンバーガーメニューが開いた時のアニメーション
+  &.active {
+    background-color: #333;
+    &::before {
+      top: -6px;
+      transform: rotate(0);
+    }
+    &::after {
+      bottom: -6px;
+      transform: rotate(0);
+    }
+  }
 `;
 
 const SDisplayContainer = styled.div`
