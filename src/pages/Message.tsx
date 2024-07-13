@@ -34,9 +34,12 @@ const Message = () => {
       <SDisplayContainer>
         <SMessageContainer>
           {messages.map((message, index) => (
-            <SMessageBox role={message.role} key={message.content + index}>
-              <SMessage role={message.role}>{message.content}</SMessage>
-            </SMessageBox>
+            <SCard>
+              <SIcon role={message.role} src="./src/assets/images/icon.png"></SIcon>
+              <SMessageBox role={message.role} key={message.content + index}>
+                <SMessage role={message.role}>{message.content}</SMessage>
+              </SMessageBox>
+            </SCard>
           ))}
         </SMessageContainer>
         <SOperation>
@@ -90,8 +93,25 @@ const SMessageContainer = styled.div`
   }
 `;
 
+const SCard = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+
+const SIcon = styled.img<{role: string}>`
+  display: ${(props) => (props.role === "user" ? "none" : "block")};
+  width: 40px;
+  height: 40px;
+  padding: 4px;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  margin-right: 16px;
+`;
+
 const SMessageBox = styled.div<{role: string}>`
   display: flex;
+  flex-grow: 1;
   justify-content: ${(props) => (props.role === "user" ? "flex-end" : "flex-start")};
 `;
 
@@ -100,6 +120,7 @@ const SMessage = styled.div<{role: string}>`
   min-width: 48px;
   max-width: 80%;
   min-height: 32px;
+  margin: 4px 0;
   color: ${(props) => (props.role === "user" ? "#fff" : "#0d0d0d")};
   background-color: ${(props) => (props.role === "user" ? "#12b8d8" : "#efefef")};
   border-radius: 16px;
