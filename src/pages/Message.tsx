@@ -60,37 +60,37 @@ const Message = () => {
   const welcomeMessages = [
     {
       title: "長所・短所の説明",
-      icon: "./src/assets/images/light.svg",
+      icon: "/images/light.svg",
       prompt: "スマートウォッチの長所・短所について会話形式でわかりやすく説明して。",
     },
     {
       title: "面接の準備",
-      icon: "./src/assets/images/pen.svg",
+      icon: "/images/pen.svg",
       prompt: "IT企業のフロントエンドエンジニアの求人に応募するんだけど、面接で聞かれそうな質問をリストにまとめて。",
     },
     {
       title: "文章の校正",
-      icon: "./src/assets/images/pen.svg",
+      icon: "/images/pen.svg",
       prompt: "次の文章に文法ミスや誤字脱字がないかチェックして。",
     },
     {
       title: "プレゼンのアイデア",
-      icon: "./src/assets/images/compass.svg",
+      icon: "/images/compass.svg",
       prompt: "面白くてユニークなプログラミングに関連するプレゼンのテーマを10個考えて。",
     },
     {
       title: "文章の要約",
-      icon: "./src/assets/images/pen.svg",
+      icon: "/images/pen.svg",
       prompt: "次の文章を200文字程度に要約してください。",
     },
     {
       title: "プログラムを作成",
-      icon: "./src/assets/images/terminal.svg",
+      icon: "/images/terminal.svg",
       prompt: "React, TypeScriptで次の要件を満たすプログラムを作成してください。",
     },
     {
       title: "モノの比較",
-      icon: "./src/assets/images/light.svg",
+      icon: "/images/light.svg",
       prompt: "こしあんとつぶあんを比較して表でまとめて。",
     }
   ]
@@ -141,7 +141,7 @@ const Message = () => {
                 <SCard key={message.content + index}>
                   <SIcon
                     role={message.role}
-                    src="./src/assets/images/icon.png"
+                    src="/images/icon.png"
                   ></SIcon>
                   <SMessageBox role={message.role}>
                     <SMessage role={message.role}>{message.content}</SMessage>

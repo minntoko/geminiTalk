@@ -15,11 +15,11 @@ const Sidebar = ({ setMessages, setText, isOpen }: SidebarProps) => {
   return (
     <SSidebar className={isOpen ? "active" : ""}>
       <SButton onClick={handleNewChat}>
-        <SButtonIcon src="./src/assets/images/plus.svg" alt="plus" />
+        <SButtonIcon src="/images/plus.svg" alt="plus" />
         チャットを新規作成
       </SButton>
       <SModelInfo>
-        <SIcon src="./src/assets/images/icon.png"></SIcon>
+        <SIcon src="/images/icon.png"></SIcon>
         Gemini Nano
       </SModelInfo>
     </SSidebar>
