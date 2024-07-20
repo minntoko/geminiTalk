@@ -1,0 +1,16 @@
+{
+  "short_name": "Gemini Talk",
+  "description": "ローカルで動作するGemini Nanoと対話出来るアプリです。",
+  "icons": [
+    {
+      "src": "/images/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#ffffff"
+}
