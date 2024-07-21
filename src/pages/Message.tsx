@@ -125,7 +125,7 @@ const Message = () => {
               {messages.length === 0 && (
                 <SWelcomeContainer>
                   <div>
-                    <SWelcomeMessage>ようこそGemini Talkへ</SWelcomeMessage>
+                    <SWelcomeMessage><SLine>ようこそ</SLine>Gemini Talkへ</SWelcomeMessage>
                     <SSpan>ご用件をお聞かせください</SSpan>
                   </div>
                   <SWelcomeBoxContainer>
@@ -331,6 +331,10 @@ const SWelcomeMessage = styled.span`
   background-image: linear-gradient(45deg, #12a3d8, #a563ed, #fc5d5d, #f9c017, #8ad962, #12a3d8, #a563ed, #fc5d5d);
   background-size: 400%;
   animation: ${slide} 60s infinite linear;
+  
+  @media (max-width: 768px) {
+    font-size: 2.8rem;
+  }
 `;
 
 const SSpan = styled.span`
@@ -339,6 +343,18 @@ const SSpan = styled.span`
   line-height: 1.2;
   font-weight: bold;
   color: #bbb;
+  
+  @media (max-width: 768px) {
+    font-size: 2.8rem;
+  }
+`;
+
+const SLine = styled.span`
+  display: inline-block;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 `;
 
 const SWelcomeBoxContainer = styled.div`
