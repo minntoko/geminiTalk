@@ -195,6 +195,12 @@ const SMainContainer = styled.div`
   &.active {
     margin-left: 260px;
   }
+
+  @media (max-width: 768px) {
+    &.active {
+      margin-left: 0;
+    }
+  }
 `;
 
 const SHamburgerMenu = styled.div`
@@ -275,6 +281,12 @@ const SMessageContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-width: 300px;
+    padding: 40px 0;
+  }
 `;
 
 const SWelcomeContainer = styled.div`
@@ -343,6 +355,10 @@ const SWelcomeBox = styled.button`
     top: 16px;
     left: 16px;
   }
+
+  @media (max-width: 768px) {
+    min-width: calc(42% - 4px);
+  }
 `;
 
 const SCard = styled.div`
@@ -401,6 +417,11 @@ const SInputArea = styled.div`
   border-radius: 24px;
   background-color: #fff;
   position: relative;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-width: 300px;
+  }
 `;
 
 const SInput = styled.textarea`
