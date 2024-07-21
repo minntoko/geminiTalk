@@ -118,6 +118,7 @@ const Message = () => {
               className={`hamburger__line ${isOpen ? "active" : ""}`}
             ></SHamburgerLine>
           </SHamburgerMenu>
+          <SMask className={isOpen ? "active" : ""} onClick={handleHamburgerMenu} />
           <SDisplayContainer>
             <SMessageContainer>
               {/* メッセージがない場合は、ウェルカムメッセージを表示 */}
@@ -254,6 +255,26 @@ const SHamburgerLine = styled.span`
     &::after {
       bottom: 0;
       transform: rotate(45deg);
+    }
+  }
+`;
+
+const SMask = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+    visibility: hidden;
+    transition: all 0.2s;
+      &.active {
+      visibility: visible;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.2);
+      z-index: 50;
+      cursor: pointer;
     }
   }
 `;
