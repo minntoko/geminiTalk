@@ -431,6 +431,7 @@ const SMessage = styled(ReactMarkdown)<{ role: string }>`
   border-radius: 16px;
   white-space: pre-wrap;
   font-size: 1em;
+  line-height: 1.5;
 `;
 
 const SOperation = styled.div`

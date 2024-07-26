@@ -5,3 +5,21 @@
   padding: 0;
   margin: 0;
 }
+
+ul, ol {
+  padding: 0 0 0 1.25em;
+}
+
+ul, li {
+  white-space: normal;
+}
+
+li {
+  list-style-type: disc;
+  margin: 8px 0;
+}
+
+li::marker {
+  color: #0d0d0d;
+  line-height: 1.5;
+}
