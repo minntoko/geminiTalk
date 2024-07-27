@@ -2,6 +2,9 @@ import styled, { keyframes } from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 import useMessage from "../hooks/useMessage";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
@@ -147,7 +150,7 @@ const Message = () => {
                     src="/images/icon.png"
                   ></SIcon>
                   <SMessageBox role={message.role}>
-                    <SMessage role={message.role} remarkPlugins={[remarkGfm]}>{message.content}</SMessage>
+                    <SMessage role={message.role} remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeKatex]}>{message.content}</SMessage>
                   </SMessageBox>
                 </SCard>
               ))}
