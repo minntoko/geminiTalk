@@ -10,7 +10,7 @@ ul, ol {
   padding: 0 0 0 1.25em;
 }
 
-ul, li {
+ul, li, ol, table, tr, th, td {
   white-space: normal;
 }
 
@@ -22,4 +22,39 @@ li {
 li::marker {
   color: #0d0d0d;
   line-height: 1.5;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  padding: 8px;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f9fa;
+}
+
+table th {
+  background-color: #edf2f8;
+  font-weight: bold;
+}
+
+table th:first-child {
+  border-radius: 4px 0 0 0;
+}
+
+table th:last-child {
+  border-radius: 0 4px 0 0;
+}
+
+table tr:last-of-type td:first-child {
+  border-radius: 0 0 0 4px;
+}
+
+table tr:last-of-type td:last-child {
+  border-radius: 0 0 4px 0;
 }
