@@ -57,7 +57,8 @@ const useMessage = () => {
         ...prevMessages,
         {
           role: "assistant",
-          content: "このブラウザでは利用できません",
+          content: `このブラウザでは利用できません。使い方はこちらの記事を参考にしてください。
+          https://zenn.dev/minntoko/articles/294ac7c7d27e97`,
         },
       ]);
     }
