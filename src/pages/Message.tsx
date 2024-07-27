@@ -1,5 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from 'remark-gfm';
 import useMessage from "../hooks/useMessage";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
@@ -145,7 +147,7 @@ const Message = () => {
                     src="/images/icon.png"
                   ></SIcon>
                   <SMessageBox role={message.role}>
-                    <SMessage role={message.role}>{message.content}</SMessage>
+                    <SMessage role={message.role} remarkPlugins={[remarkGfm]}>{message.content}</SMessage>
                   </SMessageBox>
                 </SCard>
               ))}
@@ -419,7 +421,7 @@ const SMessageBox = styled.div<{ role: string }>`
     props.role === "user" ? "flex-end" : "flex-start"};
 `;
 
-const SMessage = styled.div<{ role: string }>`
+const SMessage = styled(ReactMarkdown)<{ role: string }>`
   padding: 4px 16px;
   min-width: 48px;
   max-width: 80%;
@@ -430,6 +432,7 @@ const SMessage = styled.div<{ role: string }>`
   border-radius: 16px;
   white-space: pre-wrap;
   font-size: 1em;
+  line-height: 1.5;
 `;
 
 const SOperation = styled.div`
