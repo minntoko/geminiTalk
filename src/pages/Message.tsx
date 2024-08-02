@@ -8,6 +8,7 @@ import 'katex/dist/katex.min.css';
 import useMessage from "../hooks/useMessage";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import CodeBlock from "../components/CodeBlock";
 
 interface WelcomeCards {
   title: string;
@@ -112,6 +113,10 @@ const Message = () => {
     setText(prompt);
   }
 
+  const components = {
+    code: CodeBlock,
+  };
+
   return (
     <>
       <SFlex>
@@ -150,7 +155,7 @@ const Message = () => {
                     src="/images/icon.png"
                   ></SIcon>
                   <SMessageBox role={message.role}>
-                    <SMessage role={message.role} remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeKatex]}>{message.content}</SMessage>
+                    <SMessage role={message.role} remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeKatex]} components={components}>{message.content}</SMessage>
                   </SMessageBox>
                 </SCard>
               ))}
