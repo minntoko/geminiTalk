@@ -315,7 +315,7 @@ const SMessageContainer = styled.div`
   flex-grow: 1;
   flex-direction: column;
   gap: 12px;
-  width: 70%;
+  width: 80%;
   min-width: 640px;
   max-width: 880px;
   padding: 40px 20px;
@@ -440,7 +440,7 @@ const SMessageBox = styled.div<{ role: string }>`
 const SMessage = styled(ReactMarkdown)<{ role: string }>`
   padding: 4px 16px;
   min-width: 48px;
-  max-width: 80%;
+  max-width: calc(100% - 48px);
   min-height: 32px;
   margin: 4px 0;
   color: ${(props) => (props.role === "user" ? "#fff" : "#0d0d0d")};
