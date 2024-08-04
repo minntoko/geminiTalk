@@ -14,6 +14,14 @@ ul, li, ol, table, tr, th, td {
   white-space: normal;
 }
 
+li {
+  margin-top: 16px;
+}
+
+li:first-child {
+  margin-top: 0;
+}
+
 ul li {
   list-style: none;
   position: relative;
@@ -23,10 +31,10 @@ ul li::before {
   content: "";
   position: absolute;
   top: 12px;
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   left: -1.1em;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   background-color: #0d0d0d;
   border-radius: 50%;
 }
