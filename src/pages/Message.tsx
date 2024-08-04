@@ -130,36 +130,38 @@ const Message = () => {
           </SHamburgerMenu>
           <SMask className={isOpen ? "active" : ""} onClick={handleHamburgerMenu} />
           <SDisplayContainer>
-            <SMessageContainer>
-              {/* メッセージがない場合は、ウェルカムメッセージを表示 */}
-              {messages.length === 0 && (
-                <SWelcomeContainer>
-                  <div>
-                    <SWelcomeMessage><SLine>ようこそ</SLine>Gemini Talkへ</SWelcomeMessage>
-                    <SSpan>ご用件をお聞かせください</SSpan>
-                  </div>
-                  <SWelcomeBoxContainer>
-                    {welcomeCards.map((message, index) => (
-                      <SWelcomeBox key={message.title + index} onClick={() => handleWelcomeBox(message.prompt)}>
-                        <p>{message.title}</p>
-                        <img src={message.icon} alt="icon" />
-                      </SWelcomeBox>
-                    ))}
-                  </SWelcomeBoxContainer>
-                </SWelcomeContainer>
-              )}
-              {messages.map((message, index) => (
-                <SCard key={message.content + index}>
-                  <SIcon
-                    role={message.role}
-                    src="/images/icon.png"
-                  ></SIcon>
-                  <SMessageBox role={message.role}>
-                    <SMessage role={message.role} remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeKatex]} components={components}>{message.content}</SMessage>
-                  </SMessageBox>
-                </SCard>
-              ))}
-            </SMessageContainer>
+            <SMessageScrollArea>
+              <SMessageContainer>
+                {/* メッセージがない場合は、ウェルカムメッセージを表示 */}
+                {messages.length === 0 && (
+                  <SWelcomeContainer>
+                    <div>
+                      <SWelcomeMessage><SLine>ようこそ</SLine>Gemini Talkへ</SWelcomeMessage>
+                      <SSpan>ご用件をお聞かせください</SSpan>
+                    </div>
+                    <SWelcomeBoxContainer>
+                      {welcomeCards.map((message, index) => (
+                        <SWelcomeBox key={message.title + index} onClick={() => handleWelcomeBox(message.prompt)}>
+                          <p>{message.title}</p>
+                          <img src={message.icon} alt="icon" />
+                        </SWelcomeBox>
+                      ))}
+                    </SWelcomeBoxContainer>
+                  </SWelcomeContainer>
+                )}
+                {messages.map((message, index) => (
+                  <SCard key={message.content + index}>
+                    <SIcon
+                      role={message.role}
+                      src="/images/icon.png"
+                    ></SIcon>
+                    <SMessageBox role={message.role}>
+                      <SMessage role={message.role} remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeKatex]} components={components}>{message.content}</SMessage>
+                    </SMessageBox>
+                  </SCard>
+                ))}
+              </SMessageContainer>
+            </SMessageScrollArea>
             <SOperation>
               <SInputArea className="inputBox">
                 <SInput
@@ -299,6 +301,15 @@ const SDisplayContainer = styled.div`
   height: calc(100vh - 60px);
 `;
 
+const SMessageScrollArea = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  `;
+
 const SMessageContainer = styled.div`
   display: flex;
   flex-grow: 1;
@@ -308,10 +319,7 @@ const SMessageContainer = styled.div`
   min-width: 640px;
   max-width: 880px;
   padding: 40px 20px;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  margin: 0 auto;
 
   @media (max-width: 768px) {
     width: 100%;
