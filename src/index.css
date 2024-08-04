@@ -14,14 +14,21 @@ ul, li, ol, table, tr, th, td {
   white-space: normal;
 }
 
-li {
-  list-style-type: disc;
-  margin: 8px 0;
+ul li {
+  list-style: none;
+  position: relative;
 }
 
-li::marker {
-  color: #0d0d0d;
-  line-height: 1.5;
+ul li::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  transform: translateY(-4px);
+  left: -1.1em;
+  width: 8px;
+  height: 8px;
+  background-color: #0d0d0d;
+  border-radius: 50%;
 }
 
 table {
