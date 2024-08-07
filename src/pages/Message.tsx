@@ -1,10 +1,10 @@
 import styled, { keyframes } from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import 'katex/dist/katex.min.css';
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 import useMessage from "../hooks/useMessage";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
@@ -36,6 +36,15 @@ const Message = () => {
       sendMessage();
     }
   };
+
+  useEffect(() => {
+    const messageContainer = document.querySelector(".messageContainer");
+    const links = messageContainer?.querySelectorAll("a");
+    links?.forEach((link) => {
+      link.setAttribute("target", "_blank");
+      link.setAttribute("rel", "noopener noreferrer");
+    });
+  }, [messages]);
 
   // テキストエリアの高さを調整する
   useEffect(() => {
@@ -440,7 +449,7 @@ const SMessageBox = styled.div<{ role: string }>`
 const SMessage = styled(ReactMarkdown)<{ role: string }>`
   padding: 4px 16px;
   min-width: 48px;
-  max-width: calc(100% - 48px);
+  max-width: ${(props) => (props.role === "user" ? "calc(100% - 96px)" : "calc(100% - 48px)")};
   min-height: 32px;
   margin: 4px 0;
   color: ${(props) => (props.role === "user" ? "#fff" : "#0d0d0d")};
