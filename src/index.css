@@ -6,6 +6,11 @@
   margin: 0;
 }
 
+a {
+  word-break: break-all;
+  color: #12b8d8;
+}
+
 ul, ol {
   padding: 0 0 0 1.25em;
 }
