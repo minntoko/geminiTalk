@@ -22,7 +22,7 @@ const Message = () => {
   const handleHamburgerMenu = () => {
     setIsOpen(!isOpen);
   };
-  const { text, setText, messages, setMessages, sendMessage } = useMessage();
+  const { text, setText, messages, setMessages, sendMessage, isLoading } = useMessage();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -169,6 +169,16 @@ const Message = () => {
                     </SMessageBox>
                   </SCard>
                 ))}
+                {isLoading && (<SCard>
+                  <SIcon role="assistant" src="/images/icon.png"></SIcon>
+                  <SMessageBox role="assistant">
+                    <SLeadingMessage>
+                      <SDot  />
+                      <SDot delay="0.2s" />
+                      <SDot delay="0.4s" />
+                    </SLeadingMessage>
+                  </SMessageBox>
+                </SCard>)}
               </SMessageContainer>
             </SMessageScrollArea>
             <SOperation>
@@ -458,6 +468,47 @@ const SMessage = styled(ReactMarkdown)<{ role: string }>`
   white-space: pre-wrap;
   font-size: 1em;
   line-height: 1.5;
+`;
+
+const SLeadingMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 16px;
+  min-width: 48px;
+  max-width: calc(100% - 48px);
+  min-height: 32px;
+  margin: 4px 0;
+  color: #0d0d0d;
+  background-color: #fff;
+  border-radius: 16px;
+`;
+
+const bounceAnimation = keyframes`
+    0%, 40% {
+      transform: translateY(0px);
+    }
+    20% {
+      transform: translateY(-3px);
+      background-color: #12b8d8bb;
+    }
+    100% {
+      transform: translateY(0px);
+  }
+`;
+
+const SDot = styled.span<{ delay?: string }>`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #12b8d8;
+  margin-right: 4px;
+  &:last-child(3) {
+    margin-right: 0;
+  }
+
+  animation: ${bounceAnimation} 1.4s ease-in-out infinite;
+  animation-delay: ${(props) => props.delay || '0s'};
 `;
 
 const SOperation = styled.div`
