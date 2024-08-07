@@ -16,6 +16,7 @@ declare global {
 
 const useMessage = () => {
   const [text, setText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
 
   const sendMessage = async () => {
@@ -41,11 +42,13 @@ const useMessage = () => {
           },
         ]);
       } else {
+        setIsLoading(true);
         const session = await window.ai.createTextSession();
         const stream = session.promptStreaming(text);
         // +1している理由は、値が更新される前にインデックスを取得しているため
         const lastMessageIndex = messages.length + 1;
         for await (const chunk of stream as AsyncIterable<string>) {
+          setIsLoading(false);
           setMessages((prevMessages) => [
             ...prevMessages.slice(0, lastMessageIndex),
             { role: "assistant", content: chunk },
@@ -53,6 +56,7 @@ const useMessage = () => {
         }
       }
     } catch (error) {
+      setIsLoading(false);
       setMessages((prevMessages) => [
         ...prevMessages,
         {
@@ -70,6 +74,7 @@ const useMessage = () => {
     messages,
     setMessages,
     sendMessage,
+    isLoading
   };
 };
 
