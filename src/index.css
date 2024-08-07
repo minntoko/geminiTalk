@@ -22,6 +22,10 @@ li:first-child {
   margin-top: 0;
 }
 
+li > ul > li:first-child {
+  margin-top: 8px;
+}
+
 ul li {
   list-style: none;
   position: relative;
