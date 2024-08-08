@@ -140,7 +140,7 @@ const Message = () => {
           <SMask className={isOpen ? "active" : ""} onClick={handleHamburgerMenu} />
           <SDisplayContainer>
             <SMessageScrollArea>
-              <SMessageContainer>
+              <SMessageContainer className="messageContainer">
                 {/* メッセージがない場合は、ウェルカムメッセージを表示 */}
                 {messages.length === 0 && (
                   <SWelcomeContainer>
