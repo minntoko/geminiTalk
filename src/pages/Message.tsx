@@ -367,7 +367,8 @@ const SWelcomeMessage = styled.span`
   background-clip: text;
   background-image: linear-gradient(45deg, #12a3d8, #a563ed, #fc5d5d, #f9c017, #8ad962, #12a3d8, #a563ed, #fc5d5d);
   background-size: 400%;
-  animation: ${slide} 60s infinite linear;
+  animation: ${slide} 2s ease-in-out, ${slide} 60s linear infinite;
+  animation-delay: 0s, 2s;
   
   @media (max-width: 768px) {
     font-size: 2.8rem;
