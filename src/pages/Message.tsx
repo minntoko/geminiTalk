@@ -22,8 +22,21 @@ const Message = () => {
   const handleHamburgerMenu = () => {
     setIsOpen(!isOpen);
   };
+
   const { text, setText, messages, setMessages, sendMessage, isLoading } = useMessage();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const messageContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollMessage = () => {
+    const messageContainer = messageContainerRef.current;
+    if (messageContainer) {
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollMessage();
+  }, [messages, isLoading]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (
@@ -139,7 +152,7 @@ const Message = () => {
           </SHamburgerMenu>
           <SMask className={isOpen ? "active" : ""} onClick={handleHamburgerMenu} />
           <SDisplayContainer>
-            <SMessageScrollArea>
+            <SMessageScrollArea ref={messageContainerRef}>
               <SMessageContainer className="messageContainer">
                 {/* メッセージがない場合は、ウェルカムメッセージを表示 */}
                 {messages.length === 0 && (
@@ -324,6 +337,7 @@ const SMessageScrollArea = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+  scroll-behavior: smooth;
   &::-webkit-scrollbar {
     display: none;
   }
