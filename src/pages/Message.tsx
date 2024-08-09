@@ -344,10 +344,6 @@ const SMessageScrollArea = styled.div`
   `;
 
 const SMessageContainer = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  gap: 12px;
   width: 80%;
   min-width: 640px;
   max-width: 880px;
@@ -454,6 +450,10 @@ const SCard = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin-top: 12px;
+  &:first-child {
+    margin-top: 0;
+  }
 `;
 
 const SIcon = styled.img<{ role: string }>`
@@ -466,6 +466,7 @@ const SIcon = styled.img<{ role: string }>`
 
 const SMessageBox = styled.div<{ role: string }>`
   display: flex;
+  min-width: 0;
   flex-grow: 1;
   justify-content: ${(props) =>
     props.role === "user" ? "flex-end" : "flex-start"};
