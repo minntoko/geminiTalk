@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { Message } from "../types/message";
+import { useState } from "react";
+import UserMenu from "./UserMenu";
 
 interface SidebarProps {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
@@ -12,16 +14,27 @@ const Sidebar = ({ setMessages, setText, isOpen }: SidebarProps) => {
     setMessages([]);
     setText("");
   };
+  
+  const [isPopoverOpen, setPopoverOpen] = useState(false);
+
+  const handlePopoverToggle = () => {
+    setPopoverOpen((prevState) => !prevState);
+  };
+
   return (
     <SSidebar className={isOpen ? "active" : ""}>
       <SButton onClick={handleNewChat}>
         <SButtonIcon src="/images/plus.svg" alt="plus" />
         チャットを新規作成
       </SButton>
-      <SModelInfo>
-        <SIcon src="/images/icon.png"></SIcon>
-        Gemini Nano
-      </SModelInfo>
+      <SModelContainer>
+        {isPopoverOpen && (<UserMenu />)}
+        {isPopoverOpen && (<SMask onClick={handlePopoverToggle} />)}
+        <SModelInfo onClick={handlePopoverToggle}>
+          <SIcon src="/images/icon.png"></SIcon>
+          Gemini Nano
+        </SModelInfo>
+      </SModelContainer>
     </SSidebar>
   );
 };
@@ -73,11 +86,24 @@ const SButtonIcon = styled.img`
   margin-right: 8px;
 `;
 
+const SModelContainer = styled.div`
+  width: 100%;
+  position: relative;
+`;
+
+const SMask = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  z-index: 10;
+`;
+
 const SModelInfo = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-  width: 100%;
   padding: 8px 16px;
   border-radius: 8px;
   background-color: #edf2f8;
