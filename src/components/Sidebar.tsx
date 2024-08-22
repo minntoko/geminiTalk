@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import { Message } from "../types/message";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import UserMenu from "./UserMenu";
+import { Link } from "react-router-dom";
+import { ModelContext } from "../context/ModelContext";
 
 interface SidebarProps {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
@@ -9,30 +11,45 @@ interface SidebarProps {
   isOpen: boolean;
 }
 
+interface Model {
+  name: string;
+  type: "chrome" | "cloud" | "ollama";
+}
+
 const Sidebar = ({ setMessages, setText, isOpen }: SidebarProps) => {
+  const {selectedModel, setSelectedModel} = useContext(ModelContext);
+  const [models, setModels] = useState<Model[]>([selectedModel]);
+
   const handleNewChat = () => {
     setMessages([]);
     setText("");
   };
   
   const [isPopoverOpen, setPopoverOpen] = useState(false);
-
+  
   const handlePopoverToggle = () => {
+    const modelList = localStorage.getItem("models");
+    if (modelList) {
+      const parsedModels = JSON.parse(modelList);
+      setModels([{name: "Gemini Nano", type: "chrome"}, ...parsedModels]);
+    }
     setPopoverOpen((prevState) => !prevState);
   };
 
   return (
     <SSidebar className={isOpen ? "active" : ""}>
-      <SButton onClick={handleNewChat}>
-        <SButtonIcon src="/images/plus.svg" alt="plus" />
-        チャットを新規作成
-      </SButton>
+      <SLink to="/">
+        <SButton onClick={handleNewChat}>
+          <SButtonIcon src="/images/plus.svg" alt="plus" />
+          チャットを新規作成
+        </SButton>
+      </SLink>
       <SModelContainer>
-        {isPopoverOpen && (<UserMenu />)}
+        {isPopoverOpen && (<UserMenu models={models} setPopoverOpen={setPopoverOpen} setSelectedModel={setSelectedModel} />)}
         {isPopoverOpen && (<SMask onClick={handlePopoverToggle} />)}
         <SModelInfo onClick={handlePopoverToggle}>
           <SIcon src="/images/icon.png"></SIcon>
-          Gemini Nano
+          <SText>{selectedModel.name}</SText>
         </SModelInfo>
       </SModelContainer>
     </SSidebar>
@@ -56,6 +73,10 @@ const SSidebar = styled.div`
   &.active {
     transform: translateX(0);
   }
+`;
+
+const SLink = styled(Link)`
+  text-decoration: none;
 `;
 
 const SButton = styled.button`
@@ -104,10 +125,17 @@ const SModelInfo = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
+  max-width: 227px;
   padding: 8px 16px;
   border-radius: 8px;
   background-color: #edf2f8;
   user-select: none;
+`;
+
+const SText = styled.span`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const SIcon = styled.img`
