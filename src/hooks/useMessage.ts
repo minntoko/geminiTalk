@@ -24,7 +24,7 @@ interface DecodedObject {
 }
 
 const useMessage = () => {
-  const {API_KEY} = useModel();
+  const {getAPIKey} = useModel();
   const {selectedModel} = useContext(ModelContext);
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -98,7 +98,7 @@ const useMessage = () => {
   const sendMessageCloud = async () => {
     try {
       setIsLoading(true);
-      const genAI = new GoogleGenerativeAI(API_KEY);
+      const genAI = new GoogleGenerativeAI(getAPIKey()!);
       const session = genAI.getGenerativeModel({ model: selectedModel.name });
       const stream = (await session.generateContentStream(text)).stream;
       let message = "";

@@ -7,20 +7,31 @@ interface Model {
 
 export const useModel = () => {
   const [models, setModels] = useState<Model[]>([]);
-  const [API_KEY, setAPI_KEY] = useState("");
 
   /**
    * モデルにデータを追加
    * @param modelName
    */
-  const addModelList = (modelName: string) => {
+  const addModelList = (modelName: string, modelType: string) => {
     const modelList = localStorage.getItem("models");
-    const newModel = { name: modelName, type: "ollama" };
+    const newModel = { name: modelName, type: modelType };
     if (modelList) {
       const parsedModels = JSON.parse(modelList);
       localStorage.setItem("models", JSON.stringify([...parsedModels, newModel]));
     } else {
       localStorage.setItem("models", JSON.stringify([newModel]));
+    }
+  }
+
+  /**
+   *　モデルを削除
+    */
+  const removeModelList = (modelName: string) => {
+    const modelList = localStorage.getItem("models");
+    if (modelList) {
+      const parsedModels = JSON.parse(modelList);
+      const newModels = parsedModels.filter((model: Model) => model.name !== modelName);
+      localStorage.setItem("models", JSON.stringify(newModels));
     }
   }
 
@@ -36,23 +47,22 @@ export const useModel = () => {
     inputApiKey.trim();
     if(inputApiKey) {
       localStorage.setItem("apiKey", inputApiKey);
-      setAPI_KEY(inputApiKey);
     }
   }
 
   const getAPIKey = () => {
     const savedApiKey = localStorage.getItem("apiKey");
     if (savedApiKey) {
-      setAPI_KEY(savedApiKey);
+      return savedApiKey;
     }
   };
   return {
     models,
     setModels,
-    API_KEY,
     addModelList,
     getModelList,
     setAPIKey,
     getAPIKey,
+    removeModelList
   }
 }
