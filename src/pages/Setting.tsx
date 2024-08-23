@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useModel } from "../hooks/useModel";
 
 const Setting = () => {
-  const { getAPIKey, setAPIKey, addModelList, removeModelList, models } = useModel();
+  const { getAPIKey, setAPIKey, addModelList, removeModelList, getModelList } = useModel();
   const { setText, setMessages } = useMessage();
   const [apiKey, setApiKey] = useState<string>("");
   const [isRegister, setIsRegister] = useState<boolean>(false);
@@ -22,8 +22,27 @@ const Setting = () => {
           ? prevSelectedModels.filter((model) => model !== modelName) // 選択解除
           : [...prevSelectedModels, modelName] // 選択
     );
-    models.includes({ name: modelName, type: "cloud" }) ? removeModelList(modelName) : addModelList(modelName, "cloud");
+    selectedModels?.includes(modelName) ? removeModelList(modelName) : addModelList(modelName, "cloud");
   };
+
+  const handleRemoveModel = (modelName: string) => {
+    setSelectedModels(
+      (prevSelectedModels) =>
+        prevSelectedModels.filter((model) => model !== modelName)
+    );
+    removeModelList(modelName);
+  }
+
+  const handleAddModel = (modelName: string) => {
+    setSelectedModels(
+      (prevSelectedModels) =>
+        prevSelectedModels.includes(modelName)
+          ? prevSelectedModels
+          : [...prevSelectedModels, modelName]
+    );
+
+    selectedModels.includes(modelName) ? null : addModelList(modelName, "ollama");
+  }
 
   const handleHamburgerMenu = () => {
     setIsOpen(!isOpen);
@@ -35,10 +54,6 @@ const Setting = () => {
 
   const handleModel = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputModel(e.target.value);
-  };
-
-  const handleResetModels = () => {
-    localStorage.removeItem("models");
   };
 
   // APIを登録する
@@ -101,10 +116,12 @@ const Setting = () => {
             </SCloudModels>
             <h2>モデルを追加する</h2>
             <input type="text" onChange={handleModel} />
-            <button onClick={() => addModelList(inputModel, "ollama")}>追加</button>
-            <button onClick={handleResetModels}>リセット</button>
-            {models.map((model, index) => (
-              <p key={model.name + index}>{index + model.name}</p>
+            <button onClick={() => handleAddModel(inputModel)}>追加</button>
+            {getModelList()?.map((model, index) => (
+              <div>
+                <p key={model.name + index}>{index + model.name}</p>
+                <button onClick={() => handleRemoveModel(model.name)}>削除</button>
+              </div>
             ))}
           </SSettingContainer>
         </SMainContainer>

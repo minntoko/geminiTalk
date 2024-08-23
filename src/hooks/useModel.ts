@@ -1,13 +1,9 @@
-import {useState} from "react";
-
 interface Model {
   name: string;
   type: "chrome" | "cloud" | "ollama";
 }
 
 export const useModel = () => {
-  const [models, setModels] = useState<Model[]>([]);
-
   /**
    * モデルにデータを追加
    * @param modelName
@@ -38,8 +34,8 @@ export const useModel = () => {
   const getModelList = () => {
     const modelList = localStorage.getItem("models");
     if (modelList) {
-      const parsedModels = JSON.parse(modelList);
-      setModels(parsedModels);
+      const parsedModels: Model[] = JSON.parse(modelList);
+      return parsedModels;
     }
   };
 
@@ -57,8 +53,6 @@ export const useModel = () => {
     }
   };
   return {
-    models,
-    setModels,
     addModelList,
     getModelList,
     setAPIKey,

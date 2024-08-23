@@ -31,7 +31,6 @@ const UserMenu = ({ models, setPopoverOpen, setSelectedModel }: Props) => {
     <SUserMenu>
       <SUserMenuUl>
         <SModelContainer id="modelContainer">
-          {}
           {reversedModels.map((model, index) => (
             <SUserMenuItem key={index} onClick={() => handleSelectModel({name: model.name, type: model.type})}>
               <SSvg
