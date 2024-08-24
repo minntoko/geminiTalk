@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import { Message } from "../types/message";
+import { useContext, useState } from "react";
+import UserMenu from "./UserMenu";
+import { Link } from "react-router-dom";
+import { ModelContext } from "../context/ModelContext";
 
 interface SidebarProps {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
@@ -7,21 +11,49 @@ interface SidebarProps {
   isOpen: boolean;
 }
 
+interface Model {
+  name: string;
+  type: "chrome" | "cloud" | "ollama";
+}
+
 const Sidebar = ({ setMessages, setText, isOpen }: SidebarProps) => {
+  const {selectedModel, setSelectedModel} = useContext(ModelContext);
+  const [models, setModels] = useState<Model[]>([selectedModel]);
+
   const handleNewChat = () => {
     setMessages([]);
     setText("");
   };
+  
+  const [isPopoverOpen, setPopoverOpen] = useState(false);
+  
+  const handlePopoverToggle = () => {
+    const modelList = localStorage.getItem("models");
+    if (modelList) {
+      const parsedModels = JSON.parse(modelList);
+      setModels([{name: "Gemini Nano", type: "chrome"}, ...parsedModels]);
+    } else {
+      setModels([{ name: "Gemini Nano", type: "chrome" }]);
+    }
+    setPopoverOpen((prevState) => !prevState);
+  };
+
   return (
     <SSidebar className={isOpen ? "active" : ""}>
-      <SButton onClick={handleNewChat}>
-        <SButtonIcon src="/images/plus.svg" alt="plus" />
-        チャットを新規作成
-      </SButton>
-      <SModelInfo>
-        <SIcon src="/images/icon.png"></SIcon>
-        Gemini Nano
-      </SModelInfo>
+      <SLink to="/">
+        <SButton onClick={handleNewChat}>
+          <SButtonIcon src="/images/plus.svg" alt="plus" />
+          チャットを新規作成
+        </SButton>
+      </SLink>
+      <SModelContainer>
+        {isPopoverOpen && (<UserMenu models={models} setPopoverOpen={setPopoverOpen} setSelectedModel={setSelectedModel} />)}
+        {isPopoverOpen && (<SMask onClick={handlePopoverToggle} />)}
+        <SModelInfo onClick={handlePopoverToggle}>
+          <SIcon src="/images/icon.png"></SIcon>
+          <SText>{selectedModel.name}</SText>
+        </SModelInfo>
+      </SModelContainer>
     </SSidebar>
   );
 };
@@ -43,6 +75,10 @@ const SSidebar = styled.div`
   &.active {
     transform: translateX(0);
   }
+`;
+
+const SLink = styled(Link)`
+  text-decoration: none;
 `;
 
 const SButton = styled.button`
@@ -73,15 +109,35 @@ const SButtonIcon = styled.img`
   margin-right: 8px;
 `;
 
+const SModelContainer = styled.div`
+  width: 100%;
+  position: relative;
+`;
+
+const SMask = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  z-index: 10;
+`;
+
 const SModelInfo = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-  width: 100%;
+  max-width: 227px;
   padding: 8px 16px;
   border-radius: 8px;
   background-color: #edf2f8;
   user-select: none;
+`;
+
+const SText = styled.span`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const SIcon = styled.img`
