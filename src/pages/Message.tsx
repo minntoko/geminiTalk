@@ -545,7 +545,6 @@ const SInputArea = styled.div`
   max-width: 880px;
   margin: 0 auto;
   padding: 12px 0;
-  border-radius: 8px;
   border-radius: 24px;
   background-color: #fff;
   position: relative;
@@ -559,6 +558,7 @@ const SInputArea = styled.div`
 const SInput = styled.textarea`
   width: 100%;
   height: 24px;
+  line-height: 24px;
   max-height: 50vh;
   vertical-align: bottom;
   border: none;

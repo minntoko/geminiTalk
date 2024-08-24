@@ -41,6 +41,7 @@ const Setting = () => {
           : [...prevSelectedModels, modelName]
     );
 
+    setInputModel("");
     selectedModels.includes(modelName) ? null : addModelList(modelName, "ollama");
   }
 
@@ -60,7 +61,7 @@ const Setting = () => {
   const registerAPIKey = () => {
     inputAPIKey.trim();
     if (!inputAPIKey) return;
-    setApiKey(inputAPIKey.slice(0, 6) + "...");
+    setApiKey(apiKey.slice(0, 6) + apiKey.slice(6).replace(/./g, "."));
     setAPIKey(inputAPIKey);
     setInputAPIKey("");
     setIsRegister(true);
@@ -69,11 +70,17 @@ const Setting = () => {
   useEffect(() => {
     let apiKey = getAPIKey();
     if (apiKey) {
-      setApiKey(apiKey.slice(0, 6) + "...");
+      setApiKey(apiKey.slice(0, 6) + apiKey.slice(6).replace(/./g, "."));
       setIsRegister(true);
     }
   }, []);
 
+  const getAddModelList = () => getModelList()?.filter((model) => model.name !== "gemini-1.5-flash" && model.name !== "gemini-1.5-pro" && model.name !== "gemini-1.0-pro");
+
+  useEffect(() => {
+    setSelectedModels(getModelList()?.map((model) => model.name) || []);
+  }
+  , [selectedModels]);
   return (
     <>
       <SFlex>
@@ -90,10 +97,13 @@ const Setting = () => {
             onClick={handleHamburgerMenu}
           />
           <SSettingContainer>
-            <h2>GeminiのAPIを登録する</h2>
-            <input type="text" value={inputAPIKey} onChange={handleAPIKey} />
-            <button onClick={registerAPIKey}>登録</button>
-            <p>{apiKey}</p>
+            <SHedding>GeminiのAPIを登録する</SHedding>
+            <SInput type="text" value={inputAPIKey} onChange={handleAPIKey} />
+            <SButton onClick={registerAPIKey}>登録</SButton>
+            <SApiBox>
+              <SSvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={20}><path d="M336 352c97.2 0 176-78.8 176-176S433.2 0 336 0S160 78.8 160 176c0 18.7 2.9 36.8 8.3 53.7L7 391c-4.5 4.5-7 10.6-7 17l0 80c0 13.3 10.7 24 24 24l80 0c13.3 0 24-10.7 24-24l0-40 40 0c13.3 0 24-10.7 24-24l0-40 40 0c6.4 0 12.5-2.5 17-7l33.3-33.3c16.9 5.4 35 8.3 53.7 8.3zM376 96a40 40 0 1 1 0 80 40 40 0 1 1 0-80z"/></SSvg>
+              <p>{apiKey}</p>
+            </SApiBox>
             <SCloudModels isRegister={isRegister}>
               <SCloudModel
                 isSelect={selectedModels.includes("gemini-1.5-flash")}
@@ -114,14 +124,25 @@ const Setting = () => {
                 gemini-1.0-pro
               </SCloudModel>
             </SCloudModels>
-            <h2>モデルを追加する</h2>
-            <input type="text" onChange={handleModel} />
-            <button onClick={() => handleAddModel(inputModel)}>追加</button>
-            {getModelList()?.map((model, index) => (
-              <div>
-                <p key={model.name + index}>{index + model.name}</p>
-                <button onClick={() => handleRemoveModel(model.name)}>削除</button>
-              </div>
+            <SHedding>モデルを追加する</SHedding>
+            <SInput type="text" value={inputModel} onChange={handleModel} />
+            <SButton onClick={() => handleAddModel(inputModel)}>追加</SButton>
+            {getAddModelList()?.map((model, index) => (
+              <SModelContainer>
+                <SModel key={model.name + index}>
+                <SSvg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 640 512"
+                  width="20px"
+                  height="20px"
+                >
+                  <path d="M320 0c17.7 0 32 14.3 32 32l0 64 120 0c39.8 0 72 32.2 72 72l0 272c0 39.8-32.2 72-72 72l-304 0c-39.8 0-72-32.2-72-72l0-272c0-39.8 32.2-72 72-72l120 0 0-64c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16l32 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-32 0zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16l32 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-32 0zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16l32 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-32 0zM264 256a40 40 0 1 0 -80 0 40 40 0 1 0 80 0zm152 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80zM48 224l16 0 0 192-16 0c-26.5 0-48-21.5-48-48l0-96c0-26.5 21.5-48 48-48zm544 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-16 0 0-192 16 0z" />
+                </SSvg>
+                <p>{model.name}</p>
+              </SModel>
+                <SRemoveButton onClick={() => handleRemoveModel(model.name)}>削除</SRemoveButton>
+              </SModelContainer>
+
             ))}
           </SSettingContainer>
         </SMainContainer>
@@ -228,11 +249,99 @@ const SMask = styled.div`
   }
 `;
 
+const SApiBox = styled.div`
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding-left: 8px;
+  margin-top: 8px;
+  font-size: 1rem;
+`;
+
 const SSettingContainer = styled.div`
   height: 100%;
   width: 100%;
+  max-width: 750px;
   padding: 16px;
+  margin: 0 auto;
   background-color: #edf2f8;
+`;
+
+const SHedding = styled.h2`
+  font-size: 1.3rem;
+  margin: 24px 0;
+`;
+
+const SInput = styled.input`
+  width: calc(100% - 67px);
+  border: none;
+  padding: 8px 16px;
+  font-size: 1rem;
+  border-radius: 8px;
+  background-color: #fefefe;
+  &::-webkit-resizer {
+    display: none;
+  }
+  &:focus {
+    outline: none;
+  }
+`;
+
+const SButton = styled.button`
+  padding: 8px 16px;
+  margin-left: 8px;
+  border: none;
+  border-radius: 8px;
+  background-color: #12b8d8;
+  color: #fff;
+  transition: all 0.2s;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const SModelContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 24px;
+`;
+
+const SModel = styled.div`
+  display: flex;
+  align-items: center;
+  width: calc( 100% - 67px );
+  padding: 0 12px;
+  border-radius: 8px;
+  list-style: none;
+  transition: all 0.3s;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+  &:hover {
+    background-color: #fefefe;
+  }
+`;
+
+const SSvg = styled.svg`
+  min-width: 20px;
+  margin-right: 8px;
+`;
+
+const SRemoveButton = styled.button`
+  padding: 8px 16px;
+  margin-left: 8px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ef2b48;
+  color: #fff;
+  transition: all 0.2s;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const SCloudModels = styled.div<{ isRegister: boolean }>`
